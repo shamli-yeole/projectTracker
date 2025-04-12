@@ -1,0 +1,46 @@
+{
+  "search_logs": [
+    {
+      "id": "1",
+      "opportunity_id": 4950,
+      "opportunity_code": "POT-4950",
+      "searched_by": "1",
+      "searched_at": "2025-03-28T05:16:35"
+    },
+    {
+      "id": "2",
+      "opportunity_id": 4951,
+      "opportunity_code": "POT-4951",
+      "searched_by": "2",
+      "searched_at": "2025-03-28T08:22:10"
+    },
+    {
+      "id": "3",
+      "opportunity_id": 4952,
+      "opportunity_code": "POT-4992",
+      "searched_by": "1",
+      "searched_at": "2025-03-29T10:05:44"
+    },
+    {
+      "id": "4",
+      "opportunity_id": 4953,
+      "opportunity_code": "POT-4972",
+      "searched_by": "1",
+      "searched_at": "2025-03-29T10:05:44"
+    },
+    {
+      "id": "5",
+      "opportunity_id": 4955,
+      "opportunity_code": "POT-4955",
+      "searched_by": "1",
+      "searched_at": "2025-03-29T10:05:44"
+    },
+    {
+      "id": "6",
+      "opportunity_id": 4956,
+      "opportunity_code": "POT-4958",
+      "searched_by": "1",
+      "searched_at": "2025-03-29T10:05:44"
+    }
+  ]
+}
