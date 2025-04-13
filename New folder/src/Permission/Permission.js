@@ -4,8 +4,7 @@ import { Card, Button, Form, Container, Row, Col, Modal, Table } from "react-boo
 import { ToastContainer, toast } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import verifyToken from "../utils/verifyToken";
-import { FaCheck, FaEdit, FaTimes } from "react-icons/fa";
-import { Pagination } from "react-bootstrap";
+import { FaCheck, FaTimes } from "react-icons/fa";
 
 // baseurl :- http://127.0.0.1:8000/api/v1
 
@@ -32,21 +31,6 @@ function PermissionData() {
     const [roles, setRoles] = useState([]);
     const [Accesses, setAccesses] = useState([]);
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
-
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-    const totalPages = 10;
-    const handlePageChange = (number) => {
-        setCurrentPage(number);
-        fetchPermission(number, itemsPerPage)
-
-
-        // console.log("accessed data:", accessDataAll);
-    };
-
     // 422 (Unprocessable Entity)
     // 403 forbidden
 
@@ -68,7 +52,7 @@ function PermissionData() {
     };
 
     useEffect(() => {
-        fetchPermission(currentPage, itemsPerPage);
+        fetchPermission();
         GetRolesID();
         GetAccessID();
         console.log("Updated Selected Permission ID:", selectePermissionId);
@@ -80,7 +64,7 @@ function PermissionData() {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/roles/`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/v1//roles/`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -103,16 +87,21 @@ function PermissionData() {
             }
         } catch (error) {
             console.error("Error fetching roles:", error);
-            // setErrorMessage("Network error: Server is  unreachable. Please try again later.");
-            alert("Unable to fetch permission. Please check your network connection.");
+            setErrorMessage("Unable to fetch roles. Please try again later.");
+            alert("Unable to fetch roles. Please check your network connection.");
         }
     };
+
+
+
+
+
 
 
     const GetAccessID = async () => {
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/access/`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/v1//access/`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -154,6 +143,7 @@ function PermissionData() {
 
     // );
 
+
     const fetchPermission = async () => {
 
         const token = localStorage.getItem("token");
@@ -165,7 +155,7 @@ function PermissionData() {
         }
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/permission/`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/v1//permission/`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -196,13 +186,13 @@ function PermissionData() {
     const addOrEditPermission = async () => {
         console.log("Edit Mode:", editMode);
         console.log("Selected Permission ID Before API Call:", selectePermissionId);
-
-
+       
+        
 
         const token = localStorage.getItem("token");
         const url = editMode
-            ? `http://127.0.0.1:8000/api/v1/Permission/${selectePermissionId}`
-            : "http://127.0.0.1:8000/api/v1/permission/";
+            ? `http://127.0.0.1:8000/api/v1//Permission/${selectePermissionId}`
+            : "http://127.0.0.1:8000/api/v1//permission/";
         const method = editMode ? "POST" : "POST";
 
         try {
@@ -255,48 +245,71 @@ function PermissionData() {
                     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
                 }}
             >
-                <Row className="align-items-center justify-content-between mb-3">
-                    <Col xs="auto">
-                        <h4 className="text-primary fw-bold m-0">Permission</h4>
-                    </Col>
-                    <Col xs="auto">
-                        <Button
-                            variant="outline-primary"
-                            onClick={handleShow}
-                            style={{
-                                borderRadius: "8px",
-                                fontWeight: "500",
-                                padding: "8px 16px",
-                                boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
-                            }}
-                        >
-                            Add Permission
-                        </Button>
-                    </Col>
+                <Row
+                    className="d-flex align-items-center justify-content-between mb-3 p-3"
+                    style={{
+                        background: "linear-gradient(90deg, #007bff, #0056b3)",
+                        borderRadius: "8px",
+                        padding: "15px 20px"
+                    }}
+                >
+                    <h4
+                        className="mb-0"
+                        style={{
+                            color: "#ffffff",
+                            fontSize: "22px",
+                            fontWeight: "600",
+                            letterSpacing: "1px"
+                        }}
+                    >
+                        Permission
+                    </h4>
+                    <Button
+                        variant="light"
+                        onClick={handleShow}
+                        className="ms-auto"
+                        style={{
+                            width: "200px",
+                            height: "50px",
+                            fontSize: "16px",
+                            fontWeight: "500",
+                            borderRadius: "8px",
+                            boxShadow: "0px 3px 5px rgba(0, 0, 0, 0.2)",
+                            transition: "0.3s",
+                            border: "2px solid #ffffff",
+                            color: "#007bff"
+                        }}
+                        onMouseOver={(e) => (e.target.style.backgroundColor = "#ffffff")}
+                        onMouseOut={(e) => (e.target.style.backgroundColor = "#cce5ff")}
+                    >
+                        Add Permission
+                    </Button>
                 </Row>
+
 
 
                 {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
                 {/* Table for Permission Management */}
-                <Table striped bordered hover responsive className="shadow-sm"
-                    style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.95rem" }}>
+                <Table striped bordered hover responsive>
                     <thead>
-                        <tr >
-                            <th style={{ backgroundColor: "#007bff", color: "#fff" }}>Sr.No</th>
-                            <th style={{ backgroundColor: "#007bff", color: "#fff" }}>Role</th>
-                            <th style={{ backgroundColor: "#007bff", color: "#fff" }}>Access</th>
-                            <th style={{ backgroundColor: "#007bff", color: "#fff" }}>View</th>
-                            <th style={{ backgroundColor: "#007bff", color: "#fff" }}>Add</th>
-                            <th style={{ backgroundColor: "#007bff", color: "#fff" }}>Delete</th>
-                            <th style={{ backgroundColor: "#007bff", color: "#fff" }}>Edit</th>
-                            <th style={{ backgroundColor: "#007bff", color: "#fff" }}>Status</th>
-                            <th style={{ backgroundColor: "#007bff", color: "#fff" }}>Action</th>
+                        <tr>
+                            <th>#</th>
+                            <th>Role</th>
+                            <th>Access</th>
+                            <th>View</th>
+                            <th>Add</th>
+                            <th>Delete</th>
+                            <th>Edit</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
                         <tr>
 
                         </tr>
                     </thead>
                     <tbody>
+
+
 
                         {PermissionDataAll?.filter(PermissionData => PermissionData.role?.name && PermissionData.role.name !== "N/A"
                         )
@@ -311,64 +324,48 @@ function PermissionData() {
                                     <td>{PermissionData.is_add === 1 ? <FaCheck color="green" /> : <FaTimes color="red" />}</td>
                                     <td>{PermissionData.is_edit === 1 ? <FaCheck color="green" /> : <FaTimes color="red" />}</td>
                                     <td>{PermissionData.is_delete === 1 ? <FaCheck color="green" /> : <FaTimes color="red" />}</td>
+                                    <td>{PermissionData.status}</td>
                                     <td>
-                                        <span
-                                            className={`badge rounded-pill ${PermissionData.status === "Active"
-                                                ? "bg-success"
-                                                : "bg-secondary"
-                                                }`}
-                                        >
-                                            {PermissionData.status}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <Button variant="link" className="me-2 mb-1 text-warning p-0 fs-5"
-                                            onClick={() => {
-                                                console.log("Edit Button Clicked for ID:", PermissionData.id);
-                                                //setname(PermissionData.name)
-                                                // setPermission(PermissionData.Permission);
-                                                // setRoleID("");
-                                                // setaccessID("");
-                                                // setIsView("");
-                                                // setIsAdd("");
-                                                // setIsEdit("");
-                                                // setIsDelete("");
-                                                // // setPermission("");
-                                                // setStatus("");
-                                                // setStatus(PermissionData.status);
-                                                // setselectePermissionId(PermissionData.id);
+                                        <Button variant="warning" className="me-2 mb-1" onClick={() => {
+                                            console.log("Edit Button Clicked for ID:", PermissionData.id);
+                                            //setname(PermissionData.name)
+                                            // setPermission(PermissionData.Permission);
+                                            // setRoleID("");
+                                            // setaccessID("");
+                                            // setIsView("");
+                                            // setIsAdd("");
+                                            // setIsEdit("");
+                                            // setIsDelete("");
+                                            // // setPermission("");
+                                            // setStatus("");
+                                            // setStatus(PermissionData.status);
+                                            // setselectePermissionId(PermissionData.id);
 
 
-                                                setselectePermissionId(PermissionData.id); // Store selected ID
-                                                console.log(">>>>>>>>>ID PERMISSION>>>>", PermissionData.id);
-                                                setRoleID(PermissionData.role?.id || ""); // Store Role ID
-                                                setRoleName(PermissionData.role?.name || ""); // Store Role Name
-                                                setaccessID(PermissionData.access?.id || ""); // Store Access ID
-                                                setAccessName(PermissionData.access?.name || ""); // Store Access Name
-                                                setIsView(PermissionData.is_view === 1);
-                                                setIsAdd(PermissionData.is_add === 1);
-                                                setIsEdit(PermissionData.is_edit === 1);
-                                                setIsDelete(PermissionData.is_delete === 1);
-                                                setStatus(PermissionData.status || "");
-                                                setEditMode(true);
-                                                setShow(true);
+                                            setselectePermissionId(PermissionData.id); // Store selected ID
+                                            console.log(">>>>>>>>>ID PERMISSION>>>>", PermissionData.id);
+                                            setRoleID(PermissionData.role?.id || ""); // Store Role ID
+                                            setRoleName(PermissionData.role?.name || ""); // Store Role Name
+                                            setaccessID(PermissionData.access?.id || ""); // Store Access ID
+                                            setAccessName(PermissionData.access?.name || ""); // Store Access Name
+                                            setIsView(PermissionData.is_view === 1);
+                                            setIsAdd(PermissionData.is_add === 1);
+                                            setIsEdit(PermissionData.is_edit === 1);
+                                            setIsDelete(PermissionData.is_delete === 1);
+                                            setStatus(PermissionData.status || "");
+                                            setEditMode(true);
+                                            setShow(true);
 
-                                                console.log("Selected Permission ID:", PermissionData.id);
-                                                console.log("Role ID:", PermissionData.role?.id, "Role Name:", PermissionData.role?.name);
-                                                console.log("Access ID:", PermissionData.access?.id, "Access Name:", PermissionData.access?.name);
+                                            console.log("Selected Permission ID:", PermissionData.id);
+                                            console.log("Role ID:", PermissionData.role?.id, "Role Name:", PermissionData.role?.name);
+                                            console.log("Access ID:", PermissionData.access?.id, "Access Name:", PermissionData.access?.name);
 
 
-                                                setEditMode(true);
-                                                setShow(true);
-                                                console.log("Edit Mode:", editMode);
-                                                console.log("Show Modal:", show);
-                                            }}
-
-                                            title="Edit"
-                                        >
-
-                                            <FaEdit />
-                                        </Button>
+                                            setEditMode(true);
+                                            setShow(true);
+                                            console.log("Edit Mode:", editMode);
+                                            console.log("Show Modal:", show);
+                                        }}>Edit</Button>
 
                                     </td>
                                 </tr>
@@ -539,27 +536,10 @@ function PermissionData() {
                     </Modal.Footer>
                 </Modal>
 
-            </Container>
 
-            {totalPages > 1 && (
-                <div className="d-flex justify-content-end mt-3">
-                    <Pagination>
-                        <Pagination.First onClick={() => setCurrentPage(1)} disabled={currentPage === 1} />
-                        <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} />
-                        {[...Array(totalPages)].map((_, index) => (
-                            <Pagination.Item
-                                key={index + 1}
-                                active={index + 1 === currentPage}
-                                onClick={() => handlePageChange(index + 1)}
-                            >
-                                {index + 1}
-                            </Pagination.Item>
-                        ))}
-                        <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages} />
-                        <Pagination.Last onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages} />
-                    </Pagination>
-                </div>
-            )}
+
+
+            </Container>
         </div>
     );
 }

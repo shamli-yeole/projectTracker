@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Container, Table, Button, Spinner } from "react-bootstrap";
+import { Container, Table, Button , Spinner} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import DocumentUser from "./DocumentUser";
-import { FaEye } from "react-icons/fa";
+import DocumentUser from "./DocumentUser"; // ✅ Correct spelling
 
 
 function DocumentData() {
@@ -22,7 +21,7 @@ function DocumentData() {
         const token = localStorage.getItem("token");
         try {
             const response = await fetch(
-                "http://127.0.0.1:8000/api/v1/Searched-Opportunity-Docs/searched_opportunities",
+                "http://127.0.0.1:8000/api/v1//Searched-Opportunity-Docs/searched_opportunities",
                 {
                     method: "GET",
                     headers: {
@@ -39,7 +38,7 @@ function DocumentData() {
             const data = await response.json();
             console.log("Fetched Documents:", data);
 
-            setDocuments(data);
+            setDocuments(data);  
 
             setErrorMessage(""); // Clear previous errors
         } catch (error) {
@@ -66,9 +65,10 @@ function DocumentData() {
                     <Table striped bordered hover responsive>
                         <thead style={{ backgroundColor: "blue", color: "#ffffff" }}>
                             <tr>
-                                <th>Sr. No.</th>
+                                <th>#</th>
                                 <th>Opportunity ID</th>
                                 <th>Opportunity Code</th>
+
                                 <th>Searched By</th>
                                 <th>Searched At</th>
                                 <th>Action</th>
@@ -90,15 +90,14 @@ function DocumentData() {
                                                     setOpportunityID(doc.opportunity_id)
                                                     console.log('opportunity id:', doc.opportunity_id);
                                                     navigate('/app/userdocument', { state: { opportunityId: doc.opportunity_id } });
+
+
                                                 }
                                                 }
-                                                title="View Details"
 
                                             >
                                                 View
-                                                <FaEye />
                                             </Button>
-                                            
                                         </td>
                                     </tr>
                                 ))
@@ -111,8 +110,13 @@ function DocumentData() {
                             )}
                         </tbody>
                     </Table>
+
                 )
+
+
+
                 }
+
 
             </Container>
         </div>

@@ -9,7 +9,6 @@ import GetRoles from "./Roles/GetRoles";
 import Layout from "./Layout"; // ✅ Import Layout
 import DocumentData from "./Document/DocumentData";
 import DocumentUser from "./Document/DocumentUser";
-import GetUserAccess from "./UserAccess/UserAccess";
 
 export default function App() {
   return (
@@ -29,11 +28,12 @@ export default function App() {
       >
         <Route index element={<Tables />} />
         <Route path="tables" element={<Tables />} />
-        <Route path="users" element={<GetUserAccess />} />
         <Route path="permission" element={<PermissionData />} />
         <Route path="roles" element={<GetRoles />} />
         <Route path="access" element={<AccessData />} />
         <Route path="document" element={<DocumentData />} />
+       
+     
         <Route path="userdocument" element={<DocumentUser />} />
       </Route>
 

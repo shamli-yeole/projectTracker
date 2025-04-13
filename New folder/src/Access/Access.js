@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 
-import { Pagination } from "react-bootstrap";
+
 import { ToastContainer, toast } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import verifyToken from "../utils/verifyToken";
@@ -25,23 +25,6 @@ function AccessData() {
     const [errorMessage, setErrorMessage] = useState("");
     const [viewMode, setViewMode] = useState(false); // New state for view mode
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
-
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-    const totalPages = 10;
-    // const totalPages = Math.ceil(accessDataAll / itemsPerPage);
-    // console.log('totalPages:',totalPages);
-
-    const handlePageChange = (number) => {
-        setCurrentPage(number);
-        fetchaccess(number, itemsPerPage)
-
-
-        console.log("accessed data:", accessDataAll);
-    };
 
     const handleClose = () => {
         setShow(false);
@@ -56,14 +39,14 @@ function AccessData() {
     };
 
     useEffect(() => {
-        fetchaccess(currentPage, itemsPerPage);
+        fetchaccess();
+
+
 
     }, []);
 
-    const fetchaccess = async (pageNumber, itemsPerPage) => {
+    const fetchaccess = async () => {
 
-        console.log("PAgeNumner:", pageNumber);
-        console.log("itemsPerPage:", itemsPerPage);
         const token = localStorage.getItem("token");
         const isvalid = await verifyToken();
         if (!isvalid.valid === true) {
@@ -72,7 +55,7 @@ function AccessData() {
         }
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/v1/access/?limit=${itemsPerPage}&page=${pageNumber}`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/v1//access/`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -80,22 +63,20 @@ function AccessData() {
                 },
             });
             const data = await response.json();
-            console.log('data**', data);
 
             if (data.status_code === 200 || data.status_code === 201) {
                 setAccessDataAll(data.data);
-                // const currentItems = accessDataAll.slice(indexOfFirstItem, indexOfLastItem);
                 setErrorMessage(""); // Clear any previous errors
 
             } else {
-                //  setErrorMessage(data.detail || "Something went wrong");
+                setErrorMessage(data.detail || "Something went wrong");
 
                 console.error("Error fetching access:", data.detail || "Unknown error");
 
             }
         } catch (error) {
             console.error("Error fetching Access:", error);
-            setErrorMessage("Network error: Server is  unreachable. Please try again later.");
+            setErrorMessage("Network error: Unable to fetch data access.");
             alert("Network error: Unable to fetch Access. Please try again later.");
         }
     };
@@ -171,12 +152,14 @@ function AccessData() {
         }
     };
 
+
+
+
     return (
         <div>
             <ToastContainer />
 
             <Container className="mt-4 p-4 rounded bg-white shadow-sm">
-
                 <Row className="align-items-center justify-content-between mb-3">
                     <Col xs="auto">
                         <h4 className="text-primary fw-bold m-0">Access Management</h4>
@@ -214,15 +197,16 @@ function AccessData() {
                     <tbody>
                         {accessDataAll.map((accessData, index) => (
                             <tr key={accessData.id}>
-                                <td>{indexOfFirstItem + index + 1}</td>
+                                <td>{index + 1}</td>
                                 <td>{accessData.name}</td>
                                 <td>{accessData.access}</td>
                                 <td>
                                     <span
-                                        className={`badge rounded-pill ${accessData.status === "Active"
-                                            ? "bg-success"
-                                            : "bg-secondary"
-                                            }`}
+                                        className={`badge rounded-pill ${
+                                            accessData.status === "Active"
+                                                ? "bg-success"
+                                                : "bg-secondary"
+                                        }`}
                                     >
                                         {accessData.status}
                                     </span>
@@ -283,8 +267,8 @@ function AccessData() {
                         // Submit logic (unchanged)
                         const token = localStorage.getItem("token");
                         const url = editMode
-                            ? `http://127.0.0.1:8000/api/v1/access/update/${selecteAccessId}`
-                            : "http://127.0.0.1:8000/api/v1/access/";
+                            ? `http://127.0.0.1:8000/api/v1//access/update/${selecteAccessId}`
+                            : "http://127.0.0.1:8000/api/v1//access/";
                         const method = editMode ? "PUT" : "POST";
 
                         try {
@@ -391,26 +375,6 @@ function AccessData() {
                     )}
                 </Formik>
             </Modal>
-            {totalPages > 1 && (
-                <div className="d-flex justify-content-end mt-3">
-                    <Pagination>
-                        <Pagination.First onClick={() => setCurrentPage(1)} disabled={currentPage === 1} />
-                        <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} />
-                        {[...Array(totalPages)].map((_, index) => (
-                            <Pagination.Item
-                                key={index + 1}
-                                active={index + 1 === currentPage}
-                                onClick={() => handlePageChange(index + 1)}
-                            >
-                                {index + 1}
-                            </Pagination.Item>
-                        ))}
-                        <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages} />
-                        <Pagination.Last onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages} />
-                    </Pagination>
-                </div>
-            )}
-
         </div>
     );
 }

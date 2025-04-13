@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
-import { FaBars, FaTable, FaUserShield, FaLock, FaKey } from "react-icons/fa";
+import { FaBars, FaTable, FaUserShield, FaLock, FaKey , FaUserAlt , FaUserFriends  } from "react-icons/fa";
+
+
 import { IoDocument } from "react-icons/io5";
 
 const SidebarComponent = () => {
@@ -78,6 +80,15 @@ const SidebarComponent = () => {
           >
             {!collapsed && "Tracker"}
           </MenuItem>
+
+          <MenuItem 
+            icon={<FaUserFriends  style={{ fontSize: "16px" }}/>} 
+            component={<Link to="/app/users"/>}
+          >
+            {!collapsed && "Users"}
+          </MenuItem>
+
+
           <MenuItem 
             icon={<FaUserShield style={{ fontSize: "16px" }} />} 
             component={<Link to="/app/roles" />}

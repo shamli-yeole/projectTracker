@@ -1,0 +1,15 @@
+.timeline-dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; 
+    height: 24px; 
+}
+
+.timeline-content {
+    margin-left: 10px; /* Adjust spacing */
+}
+
+.rs-timeline-item {
+    align-items: flex-start; /* Align items properly */
+}

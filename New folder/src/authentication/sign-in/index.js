@@ -11,7 +11,6 @@ function Basic() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,7 +32,7 @@ function Basic() {
       formData.append("username", username);
       formData.append("password", password);
 
-      const response = await fetch("http://127.0.0.1:8000/api/v1/users/token/", {
+      const response = await fetch("http://127.0.0.1:8000/api/v1//users/token/", {
         method: "POST",
         body: formData,
       });
@@ -63,64 +62,43 @@ function Basic() {
       }
     } catch (error) {
       console.error("Login error:", error);
-      setErrorMessage("Network error: Server is  unreachable. Please try again later.");
       toast.error("Something went wrong. Please try again.");
     }
   };
 
   return (
-    <div
-    className="position-relative d-flex justify-content-center align-items-center vh-100"
-    style={{
-      backgroundImage: `url('/image_login.jpeg')`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-    }}
-  >
-     <ToastContainer />
+    <div className="container mt-5">
+      <ToastContainer />
+      <div className="card p-4 shadow-lg" style={{ maxWidth: "400px", margin: "auto" }}>
+        <h3 className="text-center">Sign in</h3>
 
-    <div
-      className="position-absolute top-0 start-0 w-100 h-100"
-      style={{
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        zIndex: 0
-      }}
-    />
-    <div className="card p-4 shadow-lg" style={{ maxWidth: "400px", width: "100%", zIndex: 1 }}>
-    <h3 className="text-center">Sign in</h3>
-  
-  <div className="mb-3">
-    <label className="form-label">Username</label>
-    <input
-      type="text"
-      className={`form-control ${errors.username ? "is-invalid" : ""}`}
-      value={username}
-      onChange={(e) => setUsername(e.target.value)}
-    />
-    {errors.username && <div className="invalid-feedback">{errors.username}</div>}
-  </div>
+        <div className="mb-3">
+          <label className="form-label">Username</label>
+          <input
+            type="text"
+            className={`form-control ${errors.username ? "is-invalid" : ""}`}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          {errors.username && <div className="invalid-feedback">{errors.username}</div>}
+        </div>
 
-  <div className="mb-3">
-    <label className="form-label">Password</label>
-    <input
-      type="password"
-      className={`form-control ${errors.password ? "is-invalid" : ""}`}
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-    />
-    {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-  </div>
+        <div className="mb-3">
+          <label className="form-label">Password</label>
+          <input
+            type="password"
+            className={`form-control ${errors.password ? "is-invalid" : ""}`}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+        </div>
 
-  <button className="btn btn-primary w-100" onClick={handleLogin}>
-    Sign in
-  </button>
-</div>
+        <button className="btn btn-primary w-100" onClick={handleLogin}>
+          Sign in
+        </button>
+      </div>
     </div>
-   
-
-      
-
-  
   );
 }
 

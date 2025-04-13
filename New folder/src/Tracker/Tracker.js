@@ -14,7 +14,7 @@ import PlaneIcon from "@rsuite/icons/legacy/Plane";
 import TruckIcon from "@rsuite/icons/legacy/Truck";
 import UserIcon from "@rsuite/icons/legacy/User";
 import CheckIcon from "@rsuite/icons/legacy/Check";
-import { Card,  Form, Container, Row, Col, Modal, Table } from "react-bootstrap";
+
 
 // timeline vertical
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
@@ -64,13 +64,12 @@ function Tables() {
 
       if (!isvalid.valid === true) {
         toast.error("Invalid token! Please login again");
-        
         return;
       }
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/v1/tracker/tracker?id=${encodeURIComponent(
+          `http://127.0.0.1:8000/api/v1//tracker/tracker?id=${encodeURIComponent(
             values.id
           )}&id_type=${encodeURIComponent(values.idType)}`,
           {
@@ -205,13 +204,7 @@ function Tables() {
     <div>
       <ToastContainer></ToastContainer>
       <div style={{ background: "#fff", borderRadius: "12px", padding: "20px" }}>
-         <Row className="align-items-center justify-content-between mb-3">
-                            <Col xs="auto">
-                                <h4 className="text-primary fw-bold m-0">Project Timeline</h4>
-                            </Col>
-                            
-                        </Row>
-      
+        <h3>Project Timeline</h3>
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
         <form onSubmit={formik.handleSubmit}>
           <Box sx={{ display: "flex", justifyContent: "center", p: 2, width: "100%" }}>

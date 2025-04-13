@@ -13,7 +13,7 @@ const verifyToken = async () => {
 
     try {
         console.log("api hit ");
-        const response = await fetch("http://127.0.0.1:8000/api/v1/users/verify-token/", {
+        const response = await fetch("http://127.0.0.1:8000/api/v1//users/verify-token/", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -35,18 +35,6 @@ const verifyToken = async () => {
       
        // return data.message; // Expecting `{ valid: true }` if token is valid
          // Token is valid, return user data
-         if(data.data){
-            console.log('data.data', data.data);
-            localStorage.setItem("user", JSON.stringify(data.data.user));
-            const user = localStorage.getItem("user");
-            console.log( 'USER Get)))',user);
-            localStorage.setItem("access", JSON.stringify(data.data.access));
-            const accessuser = localStorage.getItem("access");
-            console.log('accessuser',accessuser);
-            
-         }
-         
-        
         
          return { 
             valid: true, 
@@ -54,6 +42,8 @@ const verifyToken = async () => {
             userData: data.data 
         };
 
+
+       
     } catch (error) {
         console.error("Token verification failed:", error);
         return  { valid: false, status_code: 500, message: "Server error. Please try again." };
